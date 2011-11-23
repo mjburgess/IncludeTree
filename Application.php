@@ -15,9 +15,9 @@ use IncludeTree\Application\Cli\Entry,
     IncludeTree\Render\CliRenderer,
     IncludeTree\TreeQuerier;
 
-class ZoneManagerApplication extends Entry {   
+class Application extends Entry {   
     public function help() {
-        echo "\n ===== IncludeTree ZoneManager Application ===== \n";
+        echo "\n ===== IncludeTree Application ===== \n";
         
         echo PHP_EOL, '?> First,  inctree #setlocation "path/to/dir"';
         echo PHP_EOL, '?> Then,   inctree #tree $speed  (eg. zone #tree 3) ; Speed ranges from 0.1 to 100';
@@ -34,23 +34,29 @@ class ZoneManagerApplication extends Entry {
     public function saveTree($speed = null) {
         $tree = $this->getZoneTree();
         
-        file_put_contents('Store/zone.incdb', serialize($tree));
+        file_put_contents('tree.incdb', serialize($tree));
         
         $this->renderTree($tree, $speed);
     }
     
     public function loadTree($speed = null) {
-        $tree = unserialize(file_get_contents('Store/zone.incdb'));
+        $tree = unserialize(file_get_contents('tree.incdb'));
         $this->renderTree($tree, $speed);
     }
     
     public function setLocation($location) {
-        file_put_contents('Store/zone_location', $location);
+        file_put_contents('treeable_location', $location);
     }
     
     
     private function getZoneTree() {
-        $tracer = new Tracer(file_get_contents('Store/zone_location'));
+        if(file_exists('treeable_location')) {
+            $loc = file_get_contents('treeable_location');
+        } else {
+            $loc = 'Example';
+        }
+        
+        $tracer = new Tracer($loc);
         return $tracer->buildTree();
     }
     

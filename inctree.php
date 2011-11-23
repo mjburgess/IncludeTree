@@ -1,6 +1,6 @@
 <?php
 /**
- * Entry Point for ZoneManager IncludeTree Application
+ * Entry Point for IncludeTree Application
  * 
  * @package \
  * @author Michael Burgess <michael@mjburgess.co.uk>
@@ -12,4 +12,4 @@ spl_autoload_register(function ($classname) {
     require "$classname.php";
 });
 
-$app = new ZoneManagerApplication($argc, $argv);
+$app = new Application($argc, $argv);
