@@ -60,6 +60,11 @@ class Tree {
         }
     }
     
+    public function uniqueLength() {
+        $linearTree = $this->getIncludeSet();
+        return count($linearTree);
+    }
+    
     public function length() {
         $length = 0;
         

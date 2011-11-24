@@ -10,14 +10,14 @@ namespace IncludeTree\Application\Cli;
 class ArgumentParser {
     private $arguments;
     
-    const CommandSignifier = '#';
+    const CommandSignifier = '+';
     
     public function __construct($argc, $argv) {
         $this->arguments = $argv;
     }
     
-    public function getCommand() {
-        $cmd = new Command(array_shift($this->arguments));
+    public function getCommand($hasCaller = true) {
+        $cmd = new Command($hasCaller ? array_shift($this->arguments) : null);
         
         if(empty($this->arguments)) {
             $cmd->setMethod('help');
@@ -27,6 +27,7 @@ class ArgumentParser {
             if(strpos($argument, self::CommandSignifier) !== false) {
                 $cmd->setMethod(str_replace(self::CommandSignifier, '', $argument));
                 unset($this->arguments[$key]);
+                break;
             }
         }
         

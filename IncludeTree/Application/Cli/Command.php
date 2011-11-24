@@ -33,12 +33,12 @@ class Command {
         }
 
         public function setArguments($arguments) {
-            $this->arguments = $arguments;
+            $this->arguments = array_merge($arguments);
         }
         
     function __construct($caller, $method = null, array $arguments = array()) {
-        $this->caller = $caller;
-        $this->method = $method;
-        $this->arguments = $arguments;
+        $this->setCaller($caller);
+        $this->setMethod($method);
+        $this->setArguments($arguments);
     }
 }

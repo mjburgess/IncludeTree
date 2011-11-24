@@ -29,16 +29,32 @@ class TreeQuerier {
     }
     
     public function isIncludeOf($file) {
-        return $this->tree[$file]->getIncludeTree()->contains($this->file);
+        if(empty($this->tree[$file])) {
+            return false;
+        } else {
+            return (bool) $this->tree[$file]->getIncludeTree()->contains($this->file);
+        }
     }
     
     public function isIncluding($file) {
-        return $this->file->getIncludeTree()->contains(new File($file));
+        return (bool) $this->file->getIncludeTree()->contains(new File($file));
+    }
+    
+    public function filesIncluding($f) {
+        $f = new File($f);
+        
+        $list = array();
+        foreach($this->tree as $file) {
+            if($file->getIncludeTree()->contains($f)) {
+                $list[] = $file;
+            }
+        }
+        
+        return $list;
     }
     
     public function includeCount() {
-        $linearTree = $this->file->getIncludeTree()->getIncludeSet();
-        return count($linearTree);
+        return $this->file->getIncludeTree()->uniqueLength();
     }
     
     public function includeLength() {
